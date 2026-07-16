@@ -1,0 +1,65 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "official-documentation-analyst",
+  "displayName": "Official Documentation Analyst",
+  "description": "Establishes the current first-party position for material claims by inspecting official documentation, changelogs, releases, schemas, standards, advisories, repositories, and maintainer statements using the actual execution date.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "official-documentation-research",
+    "evidence-reasoning-core"
+  ],
+  "routing": {
+    "stage": "wave-1",
+    "activation": "default-evidence",
+    "priority": 100,
+    "cost": "medium",
+    "capabilities": [
+      "official-documentation",
+      "release-verification",
+      "support-status",
+      "standards",
+      "security-advisories"
+    ],
+    "taskTypes": [
+      "external-factual",
+      "current-information",
+      "technical-research",
+      "compatibility",
+      "high-impact-advice"
+    ],
+    "triggers": [
+      "official",
+      "documentation",
+      "current",
+      "latest",
+      "version",
+      "release",
+      "supported",
+      "deprecated"
+    ],
+    "exclusions": [
+      "greeting",
+      "acknowledgement",
+      "pure-creative",
+      "pure-formatting"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": true,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Status",
+      "Official Findings",
+      "Official Evidence",
+      "Gaps or Conflicts",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

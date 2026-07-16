@@ -1,0 +1,65 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "rsh-current-research",
+  "displayName": "RSH - Research & Source Hunter",
+  "description": "Investigates current independent web evidence, technical publications, original research, ecosystem reporting, and cross-source contradictions without duplicating the dedicated official-documentation or community-intelligence lanes.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "research-source-hunter",
+    "evidence-reasoning-core"
+  ],
+  "routing": {
+    "stage": "wave-1",
+    "activation": "default-evidence",
+    "priority": 95,
+    "cost": "medium",
+    "capabilities": [
+      "independent-research",
+      "cross-source-verification",
+      "technical-publications",
+      "original-research",
+      "contradiction-analysis"
+    ],
+    "taskTypes": [
+      "external-factual",
+      "current-information",
+      "technical-research",
+      "comparison",
+      "high-impact-advice"
+    ],
+    "triggers": [
+      "research",
+      "investigate",
+      "verify",
+      "compare",
+      "current",
+      "latest",
+      "evidence",
+      "sources"
+    ],
+    "exclusions": [
+      "greeting",
+      "acknowledgement",
+      "pure-creative",
+      "pure-formatting"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": true,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Status",
+      "Findings",
+      "Evidence",
+      "Uncertainty",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

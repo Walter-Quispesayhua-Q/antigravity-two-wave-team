@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "senior-mentor",
+  "displayName": "Senior Mentor",
+  "description": "Applies senior professional judgment and current best-practice evaluation to convert requirements, official guidance, independent research, community experience, project constraints, risks, and trade-offs into a safe and actionable recommendation.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "senior-expert-mode"
+  ],
+  "routing": {
+    "stage": "wave-1",
+    "activation": "conditional",
+    "priority": 70,
+    "cost": "medium",
+    "capabilities": [
+      "architecture-judgment",
+      "best-practice-evaluation",
+      "tradeoff-analysis",
+      "risk-management",
+      "actionable-recommendation"
+    ],
+    "taskTypes": [
+      "architecture",
+      "high-impact-advice",
+      "technical-strategy",
+      "complex-debugging",
+      "design-review"
+    ],
+    "triggers": [
+      "recommend",
+      "best-practice",
+      "architecture",
+      "design",
+      "tradeoff",
+      "risk",
+      "strategy",
+      "scalable"
+    ],
+    "exclusions": [
+      "narrow-fact",
+      "greeting",
+      "acknowledgement",
+      "pure-formatting"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": false,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Status",
+      "Findings",
+      "Evidence or Principles Used",
+      "Uncertainty",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

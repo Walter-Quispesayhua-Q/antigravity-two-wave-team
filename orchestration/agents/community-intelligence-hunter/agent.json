@@ -1,0 +1,65 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "community-intelligence-hunter",
+  "displayName": "Community Intelligence Hunter",
+  "description": "Collects current developer experience and emerging signals from X, Reddit, Stack Overflow, GitHub issues and discussions, Linux.do, technical communities, and developer comments without treating popularity or anecdotes as official proof.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "community-intelligence-research",
+    "evidence-reasoning-core"
+  ],
+  "routing": {
+    "stage": "wave-1",
+    "activation": "conditional",
+    "priority": 80,
+    "cost": "high",
+    "capabilities": [
+      "developer-experience",
+      "emerging-failures",
+      "workaround-validation",
+      "adoption-signals",
+      "community-disagreement"
+    ],
+    "taskTypes": [
+      "community-research",
+      "troubleshooting",
+      "product-evaluation",
+      "migration-experience",
+      "emerging-regression"
+    ],
+    "triggers": [
+      "reddit",
+      "stackoverflow",
+      "github",
+      "linuxdo",
+      "community",
+      "developers",
+      "workaround",
+      "reported"
+    ],
+    "exclusions": [
+      "official-only",
+      "pure-codebase",
+      "greeting",
+      "pure-creative"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": true,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Status",
+      "Community Signals",
+      "Community Evidence",
+      "Uncertainty",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

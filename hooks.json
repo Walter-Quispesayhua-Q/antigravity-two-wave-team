@@ -1,0 +1,12 @@
+{
+  "mandatory-agent-team-reminder": {
+    "enabled": true,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File scripts\\mandatory-agent-reminder.ps1",
+        "timeout": 10
+      }
+    ]
+  }
+}

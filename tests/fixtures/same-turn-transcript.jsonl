@@ -1,0 +1,2 @@
+{"source":"USER_EXPLICIT","type":"USER_INPUT","content":"<USER_REQUEST>TEST_SAME_TURN_REQUEST_2026: investigate a current release.</USER_REQUEST>"}
+{"source":"SYSTEM","type":"EPHEMERAL_MESSAGE","content":"[MANDATORY-TEAM-HOOK:LOADED] The adaptive PreInvocation hook is active for this root turn."}

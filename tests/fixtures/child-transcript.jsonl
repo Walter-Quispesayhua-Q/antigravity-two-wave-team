@@ -1,0 +1,1 @@
+{"source":"USER_EXPLICIT","type":"USER_INPUT","content":"<USER_REQUEST>\n[MANDATORY-TEAM-SUBAGENT:rigorous-verifier]\nTEST_CHILD_REQUEST_2026: verify the supplied parent packet without starting another team.\n</USER_REQUEST>\n<ADDITIONAL_METADATA>\nThe current local time is: 2026-07-16T09:20:38-05:00.\n</ADDITIONAL_METADATA>"}

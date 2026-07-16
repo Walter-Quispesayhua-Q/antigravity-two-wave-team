@@ -1,0 +1,63 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "codebase-analysis",
+  "displayName": "Codebase Analysis",
+  "description": "Inspects the actual workspace, repository structure, applicable rules, configuration, dependencies, code paths, tests, and local state before project-specific conclusions are made.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "codebase-analysis-agent"
+  ],
+  "routing": {
+    "stage": "wave-1",
+    "activation": "conditional",
+    "priority": 90,
+    "cost": "medium",
+    "capabilities": [
+      "workspace-inspection",
+      "code-path-analysis",
+      "configuration-analysis",
+      "dependency-analysis",
+      "test-state-analysis"
+    ],
+    "taskTypes": [
+      "implementation",
+      "debugging",
+      "code-review",
+      "architecture",
+      "local-environment"
+    ],
+    "triggers": [
+      "workspace",
+      "repository",
+      "code",
+      "file",
+      "debug",
+      "implement",
+      "configuration",
+      "local"
+    ],
+    "exclusions": [
+      "external-only",
+      "greeting",
+      "pure-creative"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": false,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Status",
+      "Scope Inspected",
+      "Findings",
+      "Risks or Gaps",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

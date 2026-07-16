@@ -1,0 +1,220 @@
+{
+  "$schema": "schemas/team.schema.json",
+  "schemaVersion": 2,
+  "id": "adaptive-two-wave-team",
+  "displayName": "Antigravity Adaptive Two-Wave Team",
+  "activation": {
+    "mode": "every-root-user-turn",
+    "hookLoadedMarker": "[MANDATORY-TEAM-HOOK:LOADED]",
+    "childTaskMarkerPrefix": "[MANDATORY-TEAM-SUBAGENT:",
+    "turnDeduplication": "latest-user-marker",
+    "transcriptTailLines": 1000
+  },
+  "coordinator": {
+    "kind": "root-agent",
+    "spawnCoordinatorSubagent": false,
+    "ownsFinalSynthesis": true,
+    "requiredSkills": [
+      "agent-team-orchestrator"
+    ]
+  },
+  "discovery": {
+    "agentsDirectory": "agents",
+    "profileFileName": "agent.json",
+    "selectionMode": "adaptive",
+    "lazyDefinitionLoading": true,
+    "invalidProfilePolicy": "abort",
+    "maximumProfiles": 32
+  },
+  "routing": {
+    "manager": "root-coordinator",
+    "defaultEvidenceProfiles": [
+      "official-documentation-analyst",
+      "rsh-current-research"
+    ],
+    "fastPathExemptions": [
+      "greeting",
+      "acknowledgement",
+      "simple-conversation",
+      "pure-formatting",
+      "pure-creative"
+    ],
+    "uncertaintyPolicy": "include-best-match",
+    "maximumWave1Agents": 8,
+    "verification": {
+      "profile": "rigorous-verifier",
+      "mode": "risk-adaptive",
+      "controller": "root-coordinator",
+      "execution": "independent-wave-2-agent",
+      "preAudit": "manager-claim-evidence-audit",
+      "reverifyOnlyAfter": "material-draft-change",
+      "requiredFor": [
+        "explicit-verification",
+        "substantive-information-or-action",
+        "current-factual-research",
+        "latest-version-or-release",
+        "deep-research",
+        "high-impact-advice",
+        "security-privacy-legal-financial-medical",
+        "code-or-configuration-change",
+        "material-contradiction"
+      ],
+      "skipFor": [
+        "greeting",
+        "acknowledgement",
+        "pure-creative",
+        "low-risk-formatting"
+      ]
+    }
+  },
+  "waves": [
+    {
+      "id": "wave-1",
+      "order": 1,
+      "mode": "parallel",
+      "candidatePool": "discovered-wave-1-profiles",
+      "dependsOn": [],
+      "requireAllSelected": true,
+      "requiredInputs": [
+        "originalRequest",
+        "executionDate",
+        "timezone",
+        "workspaceRoots",
+        "routingDecision",
+        "evidenceTier",
+        "acceptanceCriteria",
+        "constraints",
+        "workBudget",
+        "stopCondition",
+        "responseLanguage"
+      ]
+    },
+    {
+      "id": "wave-2",
+      "order": 2,
+      "mode": "sequential",
+      "candidatePool": "configured-verifier",
+      "dependsOn": [
+        "wave-1"
+      ],
+      "requireAllSelected": true,
+      "requiredInputs": [
+        "originalRequest",
+        "executionDate",
+        "timezone",
+        "workspaceRoots",
+        "routingDecision",
+        "selectedAgentEvidenceDigests",
+        "evidenceLedger",
+        "claimEvidenceMatrix",
+        "citationAudit",
+        "responseLanguage",
+        "preVerificationAudit",
+        "acceptanceCriteria",
+        "proposedAnswer",
+        "verificationCapsule"
+      ]
+    }
+  ],
+  "budgets": {
+    "maximumHookPayloadCharacters": 60000,
+    "maximumVerifierPacketCharacters": 45000,
+    "maximumAgentReportCharacters": 7000,
+    "maximumVerificationDigestCharactersPerAgent": 2500,
+    "tiers": {
+      "fast": {
+        "maximumSourcesPerLane": 0,
+        "officialMinimumSources": 0,
+        "independentMinimumSources": 0,
+        "independentMinimumDomains": 0,
+        "communityMinimumReports": 0,
+        "communityMinimumPlatforms": 0
+      },
+      "light": {
+        "maximumSourcesPerLane": 4,
+        "officialMinimumSources": 1,
+        "independentMinimumSources": 2,
+        "independentMinimumDomains": 2,
+        "communityMinimumReports": 1,
+        "communityMinimumPlatforms": 1
+      },
+      "standard": {
+        "maximumSourcesPerLane": 8,
+        "officialMinimumSources": 2,
+        "independentMinimumSources": 3,
+        "independentMinimumDomains": 2,
+        "communityMinimumReports": 3,
+        "communityMinimumPlatforms": 2
+      },
+      "deep": {
+        "maximumSourcesPerLane": 12,
+        "officialMinimumSources": 3,
+        "independentMinimumSources": 5,
+        "independentMinimumDomains": 3,
+        "communityMinimumReports": 5,
+        "communityMinimumPlatforms": 3
+      }
+    }
+  },
+  "executionPolicy": {
+    "strategy": "parallel-batched-sufficiency",
+    "directSourceFirst": true,
+    "batchSearchQueries": true,
+    "batchPageInspection": true,
+    "avoidCrossLaneDuplication": true,
+    "volatileClaimsRequireLiveRevalidation": true,
+    "stopWhenAcceptanceCriteriaSatisfied": true,
+    "maximumDiscoveryRounds": {
+      "fast": 0,
+      "light": 1,
+      "standard": 2,
+      "deep": 3
+    },
+    "maximumParallelQueries": {
+      "fast": 0,
+      "light": 3,
+      "standard": 5,
+      "deep": 8
+    }
+  },
+  "publicationPolicy": {
+    "allowedReportStatuses": [
+      "complete",
+      "partial",
+      "not-applicable",
+      "blocked"
+    ],
+    "missingDirectUrlAction": "recover-once-then-remove",
+    "maximumFocusedRecoveryAttempts": 1,
+    "domainOnlyCitationStatus": "not-supported",
+    "unsupportedClaimAction": "remove-claim-and-dependent-content",
+    "identicalDefectAction": "do-not-reverify-unchanged",
+    "maximumIdenticalDefectRepetitions": 1
+  },
+  "failurePolicy": {
+    "missingSelectedProfile": "abort",
+    "incompleteSelectedWave": "abort",
+    "verifierFailure": "correct-and-reverify",
+    "maxVerificationPasses": 2,
+    "afterMaxVerificationPasses": "report-verification-failure",
+    "executionFailureMarker": "MANDATORY_TEAM_NOT_EXECUTED",
+    "verificationFailureMarker": "FINAL_VERIFICATION_FAILED"
+  },
+  "finalGate": {
+    "requireRoutingDecision": true,
+    "requireCoverageAudit": true,
+    "requireActualReports": true,
+    "requireAllSelectedReports": true,
+    "requireVerifierWhenRequired": true,
+    "requirePreVerificationAudit": true,
+    "requireDirectSourceLinks": true,
+    "requireCommunityQualification": true,
+    "requireUserLanguage": true,
+    "requirePublishedVerifierVerdictWhenRun": true,
+    "allowedVerifierVerdicts": [
+      "pass",
+      "pass-with-caveats"
+    ],
+    "prohibitSimulatedAgents": true
+  }
+}

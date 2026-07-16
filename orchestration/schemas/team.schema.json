@@ -1,0 +1,665 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Antigravity Adaptive Two-Wave Team",
+  "description": "Project-owned schema for adaptive discovery, routing, research, and verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "id",
+    "displayName",
+    "activation",
+    "coordinator",
+    "discovery",
+    "routing",
+    "waves",
+    "budgets",
+    "executionPolicy",
+    "publicationPolicy",
+    "failurePolicy",
+    "finalGate"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 2
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "hookLoadedMarker",
+        "childTaskMarkerPrefix",
+        "turnDeduplication",
+        "transcriptTailLines"
+      ],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "const": "every-root-user-turn"
+        },
+        "hookLoadedMarker": {
+          "type": "string",
+          "minLength": 1
+        },
+        "childTaskMarkerPrefix": {
+          "type": "string",
+          "minLength": 1
+        },
+        "turnDeduplication": {
+          "type": "string",
+          "const": "latest-user-marker"
+        },
+        "transcriptTailLines": {
+          "type": "integer",
+          "minimum": 300,
+          "maximum": 5000
+        }
+      }
+    },
+    "coordinator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "spawnCoordinatorSubagent",
+        "ownsFinalSynthesis",
+        "requiredSkills"
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "root-agent"
+        },
+        "spawnCoordinatorSubagent": {
+          "type": "boolean",
+          "const": false
+        },
+        "ownsFinalSynthesis": {
+          "type": "boolean",
+          "const": true
+        },
+        "requiredSkills": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          }
+        }
+      }
+    },
+    "discovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agentsDirectory",
+        "profileFileName",
+        "selectionMode",
+        "lazyDefinitionLoading",
+        "invalidProfilePolicy",
+        "maximumProfiles"
+      ],
+      "properties": {
+        "agentsDirectory": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._/-]+$"
+        },
+        "profileFileName": {
+          "type": "string",
+          "const": "agent.json"
+        },
+        "selectionMode": {
+          "type": "string",
+          "const": "adaptive"
+        },
+        "lazyDefinitionLoading": {
+          "type": "boolean",
+          "const": true
+        },
+        "invalidProfilePolicy": {
+          "type": "string",
+          "const": "abort"
+        },
+        "maximumProfiles": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 64
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manager",
+        "defaultEvidenceProfiles",
+        "fastPathExemptions",
+        "uncertaintyPolicy",
+        "maximumWave1Agents",
+        "verification"
+      ],
+      "properties": {
+        "manager": {
+          "type": "string",
+          "const": "root-coordinator"
+        },
+        "defaultEvidenceProfiles": {
+          "$ref": "#/$defs/profileIds"
+        },
+        "fastPathExemptions": {
+          "$ref": "#/$defs/routingTerms"
+        },
+        "uncertaintyPolicy": {
+          "type": "string",
+          "const": "include-best-match"
+        },
+        "maximumWave1Agents": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "verification": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "profile",
+            "mode",
+            "controller",
+            "execution",
+            "preAudit",
+            "reverifyOnlyAfter",
+            "requiredFor",
+            "skipFor"
+          ],
+          "properties": {
+            "profile": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*$"
+            },
+            "mode": {
+              "type": "string",
+              "const": "risk-adaptive"
+            },
+            "controller": {
+              "type": "string",
+              "const": "root-coordinator"
+            },
+            "execution": {
+              "type": "string",
+              "const": "independent-wave-2-agent"
+            },
+            "preAudit": {
+              "type": "string",
+              "const": "manager-claim-evidence-audit"
+            },
+            "reverifyOnlyAfter": {
+              "type": "string",
+              "const": "material-draft-change"
+            },
+            "requiredFor": {
+              "$ref": "#/$defs/routingTerms"
+            },
+            "skipFor": {
+              "$ref": "#/$defs/routingTerms"
+            }
+          }
+        }
+      }
+    },
+    "waves": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "order",
+          "mode",
+          "candidatePool",
+          "dependsOn",
+          "requireAllSelected",
+          "requiredInputs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "parallel",
+              "sequential"
+            ]
+          },
+          "candidatePool": {
+            "type": "string",
+            "enum": [
+              "discovered-wave-1-profiles",
+              "configured-verifier"
+            ]
+          },
+          "dependsOn": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*$"
+            }
+          },
+          "requireAllSelected": {
+            "type": "boolean",
+            "const": true
+          },
+          "requiredInputs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-zA-Z0-9]*$"
+            }
+          }
+        }
+      }
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximumHookPayloadCharacters",
+        "maximumVerifierPacketCharacters",
+        "maximumAgentReportCharacters",
+        "maximumVerificationDigestCharactersPerAgent",
+        "tiers"
+      ],
+      "properties": {
+        "maximumHookPayloadCharacters": {
+          "type": "integer",
+          "minimum": 10000,
+          "maximum": 100000
+        },
+        "maximumVerifierPacketCharacters": {
+          "type": "integer",
+          "minimum": 10000,
+          "maximum": 80000
+        },
+        "maximumAgentReportCharacters": {
+          "type": "integer",
+          "minimum": 1000,
+          "maximum": 20000
+        },
+        "maximumVerificationDigestCharactersPerAgent": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 5000
+        },
+        "tiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "fast",
+            "light",
+            "standard",
+            "deep"
+          ],
+          "properties": {
+            "fast": {
+              "$ref": "#/$defs/evidenceBudget"
+            },
+            "light": {
+              "$ref": "#/$defs/evidenceBudget"
+            },
+            "standard": {
+              "$ref": "#/$defs/evidenceBudget"
+            },
+            "deep": {
+              "$ref": "#/$defs/evidenceBudget"
+            }
+          }
+        }
+      }
+    },
+    "publicationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowedReportStatuses",
+        "missingDirectUrlAction",
+        "maximumFocusedRecoveryAttempts",
+        "domainOnlyCitationStatus",
+        "unsupportedClaimAction",
+        "identicalDefectAction",
+        "maximumIdenticalDefectRepetitions"
+      ],
+      "properties": {
+        "allowedReportStatuses": {
+          "type": "array",
+          "minItems": 4,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "partial",
+              "not-applicable",
+              "blocked"
+            ]
+          }
+        },
+        "missingDirectUrlAction": {
+          "type": "string",
+          "const": "recover-once-then-remove"
+        },
+        "maximumFocusedRecoveryAttempts": {
+          "type": "integer",
+          "const": 1
+        },
+        "domainOnlyCitationStatus": {
+          "type": "string",
+          "const": "not-supported"
+        },
+        "unsupportedClaimAction": {
+          "type": "string",
+          "const": "remove-claim-and-dependent-content"
+        },
+        "identicalDefectAction": {
+          "type": "string",
+          "const": "do-not-reverify-unchanged"
+        },
+        "maximumIdenticalDefectRepetitions": {
+          "type": "integer",
+          "const": 1
+        }
+      }
+    },
+    "executionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "directSourceFirst",
+        "batchSearchQueries",
+        "batchPageInspection",
+        "avoidCrossLaneDuplication",
+        "volatileClaimsRequireLiveRevalidation",
+        "stopWhenAcceptanceCriteriaSatisfied",
+        "maximumDiscoveryRounds",
+        "maximumParallelQueries"
+      ],
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "const": "parallel-batched-sufficiency"
+        },
+        "directSourceFirst": {
+          "type": "boolean",
+          "const": true
+        },
+        "batchSearchQueries": {
+          "type": "boolean",
+          "const": true
+        },
+        "batchPageInspection": {
+          "type": "boolean",
+          "const": true
+        },
+        "avoidCrossLaneDuplication": {
+          "type": "boolean",
+          "const": true
+        },
+        "volatileClaimsRequireLiveRevalidation": {
+          "type": "boolean",
+          "const": true
+        },
+        "stopWhenAcceptanceCriteriaSatisfied": {
+          "type": "boolean",
+          "const": true
+        },
+        "maximumDiscoveryRounds": {
+          "$ref": "#/$defs/tierIntegerMap"
+        },
+        "maximumParallelQueries": {
+          "$ref": "#/$defs/tierIntegerMap"
+        }
+      }
+    },
+    "failurePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "missingSelectedProfile",
+        "incompleteSelectedWave",
+        "verifierFailure",
+        "maxVerificationPasses",
+        "afterMaxVerificationPasses",
+        "executionFailureMarker",
+        "verificationFailureMarker"
+      ],
+      "properties": {
+        "missingSelectedProfile": {
+          "type": "string",
+          "const": "abort"
+        },
+        "incompleteSelectedWave": {
+          "type": "string",
+          "const": "abort"
+        },
+        "verifierFailure": {
+          "type": "string",
+          "const": "correct-and-reverify"
+        },
+        "maxVerificationPasses": {
+          "type": "integer",
+          "const": 2
+        },
+        "afterMaxVerificationPasses": {
+          "type": "string",
+          "const": "report-verification-failure"
+        },
+        "executionFailureMarker": {
+          "type": "string",
+          "const": "MANDATORY_TEAM_NOT_EXECUTED"
+        },
+        "verificationFailureMarker": {
+          "type": "string",
+          "const": "FINAL_VERIFICATION_FAILED"
+        }
+      }
+    },
+    "finalGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requireRoutingDecision",
+        "requireCoverageAudit",
+        "requireActualReports",
+        "requireAllSelectedReports",
+        "requireVerifierWhenRequired",
+        "requirePreVerificationAudit",
+        "requireDirectSourceLinks",
+        "requireCommunityQualification",
+        "requireUserLanguage",
+        "requirePublishedVerifierVerdictWhenRun",
+        "allowedVerifierVerdicts",
+        "prohibitSimulatedAgents"
+      ],
+      "properties": {
+        "requireRoutingDecision": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireCoverageAudit": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireActualReports": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireAllSelectedReports": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireVerifierWhenRequired": {
+          "type": "boolean",
+          "const": true
+        },
+        "requirePreVerificationAudit": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireDirectSourceLinks": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireCommunityQualification": {
+          "type": "boolean",
+          "const": true
+        },
+        "requireUserLanguage": {
+          "type": "boolean",
+          "const": true
+        },
+        "requirePublishedVerifierVerdictWhenRun": {
+          "type": "boolean",
+          "const": true
+        },
+        "allowedVerifierVerdicts": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "pass-with-caveats"
+            ]
+          }
+        },
+        "prohibitSimulatedAgents": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "profileIds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      }
+    },
+    "routingTerms": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$"
+      }
+    },
+    "evidenceBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximumSourcesPerLane",
+        "officialMinimumSources",
+        "independentMinimumSources",
+        "independentMinimumDomains",
+        "communityMinimumReports",
+        "communityMinimumPlatforms"
+      ],
+      "properties": {
+        "maximumSourcesPerLane": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 30
+        },
+        "officialMinimumSources": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "independentMinimumSources": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "independentMinimumDomains": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "communityMinimumReports": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "communityMinimumPlatforms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        }
+      }
+    },
+    "tierIntegerMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fast",
+        "light",
+        "standard",
+        "deep"
+      ],
+      "properties": {
+        "fast": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "light": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "standard": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "deep": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      }
+    }
+  }
+}

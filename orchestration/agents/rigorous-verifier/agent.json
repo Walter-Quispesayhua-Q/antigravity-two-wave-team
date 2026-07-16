@@ -1,0 +1,64 @@
+{
+  "$schema": "../../schemas/agent.schema.json",
+  "schemaVersion": 2,
+  "id": "rigorous-verifier",
+  "displayName": "Rigorous Verifier",
+  "description": "Independently challenges the proposed answer, material claims, evidence, codebase observations, compatibility, tests, and acceptance criteria before the Coordinator may finalize a response.",
+  "systemPrompt": "SYSTEM.md",
+  "skills": [
+    "rigorous-verifier-agent"
+  ],
+  "routing": {
+    "stage": "wave-2",
+    "activation": "verifier",
+    "priority": 1000,
+    "cost": "high",
+    "capabilities": [
+      "independent-verification",
+      "claim-falsification",
+      "acceptance-testing",
+      "citation-audit",
+      "completion-audit"
+    ],
+    "taskTypes": [
+      "explicit-verification",
+      "current-factual-research",
+      "deep-research",
+      "high-impact-advice",
+      "code-or-configuration-change"
+    ],
+    "triggers": [
+      "verify",
+      "audit",
+      "validate",
+      "high-risk",
+      "contradiction",
+      "implementation",
+      "current"
+    ],
+    "exclusions": [
+      "greeting",
+      "acknowledgement",
+      "pure-creative",
+      "low-risk-formatting"
+    ]
+  },
+  "runtime": {
+    "kind": "custom",
+    "enableMcpTools": true,
+    "enableWriteTools": false,
+    "enableSubagentTools": false
+  },
+  "outputContract": {
+    "format": "markdown",
+    "requiredSections": [
+      "Verdict",
+      "Acceptance Criteria",
+      "Evidence Checked",
+      "Defects",
+      "Uncertainty",
+      "Recommendation"
+    ],
+    "evidenceRequired": true
+  }
+}

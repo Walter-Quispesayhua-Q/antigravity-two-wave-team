@@ -1,0 +1,5 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/plugin.json",
+  "name": "antigravity-two-wave-team",
+  "description": "An adaptive two-wave Antigravity orchestration plugin that auto-discovers specialized agents, routes only relevant evidence and analysis lanes, applies proportional research budgets, and performs risk-adaptive independent verification."
+}

@@ -1,0 +1,25 @@
+# JetBrains
+.idea/
+*.iml
+
+# Operating systems
+.DS_Store
+Thumbs.db
+
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.log
+*.tmp
+
+# Build and test outputs
+dist/
+TestResults/
+
+# Antigravity private runtime data
+.gemini/
+**/.system_generated/
+**/transcript*.jsonl

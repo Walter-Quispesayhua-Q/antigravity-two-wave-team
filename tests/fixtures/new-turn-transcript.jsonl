@@ -1,0 +1,4 @@
+{"source":"USER_EXPLICIT","type":"USER_INPUT","content":"<USER_REQUEST>TEST_OLD_TURN_2026: hello.</USER_REQUEST>"}
+{"source":"SYSTEM","type":"EPHEMERAL_MESSAGE","content":"[MANDATORY-TEAM-HOOK:LOADED] The adaptive PreInvocation hook is active for this root turn."}
+{"source":"MODEL","type":"PLANNER_RESPONSE","content":"Previous turn completed."}
+{"source":"USER_EXPLICIT","type":"USER_INPUT","content":"<USER_REQUEST>TEST_NEW_TURN_2026: investigate the latest public release.</USER_REQUEST>"}
